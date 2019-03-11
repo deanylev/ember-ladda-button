@@ -1,7 +1,7 @@
 ember-ladda-button
 ==============================================================================
 
-[Short description of the addon.]
+Ember wrapper for Ladda spinner buttons.
 
 
 Compatibility
@@ -22,7 +22,7 @@ ember install ember-ladda-button
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+`{{ladda-button buttonStyle="zoom-out" action=(action "functionThatReturnsPromise")}}My Button{{/ladda-button}}`
 
 
 Contributing
