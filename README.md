@@ -22,8 +22,11 @@ ember install ember-ladda-button
 Usage
 ------------------------------------------------------------------------------
 
-`{{#ladda-button buttonStyle="zoom-out" action=(action "functionThatReturnsPromise")}}My Button{{/ladda-button}}`
-`{{ladda-button text="My Button" type="submit" buttonStyle="zoom-out" action=(action "functionThatReturnsPromise")}}`
+```
+{{#ladda-button buttonStyle="zoom-out" action=(action "functionThatReturnsPromise")}}My Button{{/ladda-button}}
+
+{{ladda-button text="My Button" type="submit" buttonStyle="zoom-out" action=(action "functionThatReturnsPromise")}}
+```
 
 
 Contributing
