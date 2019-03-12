@@ -7,7 +7,7 @@ module.exports = function(defaults) {
     // Add options here
   });
 
-  app.import('vendor/ladda.min.css');
+  app.import('vendor/css/ladda.min.css');
 
   /*
     This build file specifies the options for the dummy test app of this
