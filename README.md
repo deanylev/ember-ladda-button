@@ -1,7 +1,7 @@
 ember-ladda-button
 ==============================================================================
 
-Ember wrapper for Ladda spinner buttons.
+Ember wrapper for Ladda spinner buttons. Note: these buttons are themeless, you will need to provide your own CSS to style them.
 
 
 Compatibility
