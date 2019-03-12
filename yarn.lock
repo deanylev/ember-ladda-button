@@ -3343,13 +3343,6 @@ ember-try@^1.0.0:
     rsvp "^4.7.0"
     walk-sync "^0.3.3"
 
-ember-uuid@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ember-uuid/-/ember-uuid-1.0.1.tgz#d638c61a189dd74b960dacd332b31f996fa7bf86"
-  integrity sha512-GKVWRaac6lRhFIF4XEbJr/kpjEzHyt/C9l+qh+gn66e+Mymt1pwmZAOColgkp/9im9QiV4RMWbUXsV80KUf7sQ==
-  dependencies:
-    ember-cli-babel "^6.6.0"
-
 emit-function@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/emit-function/-/emit-function-0.0.2.tgz#e3a50b3d61be1bf8ca88b924bf713157a5bec124"

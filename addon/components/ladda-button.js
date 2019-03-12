@@ -1,23 +1,24 @@
+/* global Ladda */
+
 import Component from '@ember/component';
 import layout from '../templates/components/ladda-button';
-import { v4 } from 'ember-uuid';
+import Ember from 'ember';
 
 export default Component.extend({
   layout,
   ladda: null,
-  instanceId: v4(),
+  tagName: 'button',
+  attributeBindings: ['buttonStyle:data-style'],
 
   buttonStyle: 'expand-right',
   action: () => Ember.RSVP.resolve(),
 
   didInsertElement() {
-    this.set('ladda', Ladda.create(document.getElementById(this.get('instanceId'))));
+    this.set('ladda', Ladda.create(document.getElementById(this.get('elementId'))));
   },
 
-  actions: {
-    onClick() {
-      this.get('ladda').start();
-      this.action().finally(() => this.get('ladda').stop());
-    }
+  click() {
+    this.get('ladda').start();
+    this.action().finally(() => this.get('ladda').stop());
   }
 });
