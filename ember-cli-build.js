@@ -7,8 +7,6 @@ module.exports = function(defaults) {
     // Add options here
   });
 
-  app.import('vendor/spin.min.js');
-  app.import('vendor/ladda.min.js');
   app.import('vendor/ladda.min.css');
 
   /*
