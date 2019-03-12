@@ -1,1 +1,7 @@
-<span class="ladda-label">{{yield}}</span>
+<span class="ladda-label">
+  {{#if text}}
+    {{text}}
+  {{else}}
+    {{yield}}
+  {{/if}}
+</span>

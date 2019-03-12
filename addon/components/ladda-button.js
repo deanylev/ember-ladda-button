@@ -7,8 +7,9 @@ export default Component.extend({
   layout,
   ladda: null,
   tagName: 'button',
-  attributeBindings: ['buttonStyle:data-style'],
+  attributeBindings: ['buttonStyle:data-style', 'type'],
 
+  text: '',
   buttonStyle: 'expand-right',
   action: () => Ember.RSVP.resolve(),
 
