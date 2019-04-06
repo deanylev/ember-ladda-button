@@ -3,6 +3,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/ladda-button';
 import Ember from 'ember';
+import * as Ladda from 'ladda';
 
 export default Component.extend({
   layout,

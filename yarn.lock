@@ -5709,12 +5709,12 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
   integrity sha512-s5kLOcnH0XqDO+FvuaLX8DDjZ18CGFk7VygH40QoKPUQhW4e2rvM0rwUq0t8IQDOwYSeLK01U90OjzBTme2QqA==
 
-ladda@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/ladda/-/ladda-2.0.1.tgz#523bb026dfbc804bb37615a08189405406198732"
-  integrity sha512-ynRaMdW9y9ABRdTUWa60HSQjtTkoEZMiQDzzYsX8yxIEm7mxL/sxpvoLutYox1XluRif3DxLDg+3Dl1wurjnJg==
+ladda@~1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/ladda/-/ladda-1.0.6.tgz#c4a3cb7fac326061d8c04bece01587fbc45db321"
+  integrity sha512-wY2Dj1ulZSQSZcFmpT96DuuuLjdj5qIMcIaH/oSWPyd240I9MI/1JxZ0tQSC81pl1Xa9cJNUUeAGNWcKbKZ70g==
   dependencies:
-    spin.js "^4.0.0"
+    spin.js "^2.0.0"
 
 leek@0.0.24:
   version "0.0.24"
@@ -8130,10 +8130,10 @@ spawn-args@^0.2.0:
   resolved "https://registry.yarnpkg.com/spawn-args/-/spawn-args-0.2.0.tgz#fb7d0bd1d70fd4316bd9e3dec389e65f9d6361bb"
   integrity sha1-+30L0dcP1DFr2ePew4nmX51jYbs=
 
-spin.js@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/spin.js/-/spin.js-4.0.0.tgz#d6643232cc20b8d2c1b3ab6f0661178145b4dde8"
-  integrity sha512-uJN9Q4/I4I7PRZAp1c5reoY89thAfvFB5thbJncAwkPjPhqCfUrCooJc8GMN8q8WKFGIMy+JMf477RW7deCInA==
+spin.js@^2.0.0:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/spin.js/-/spin.js-2.3.2.tgz#6caa56d520673450fd5cfbc6971e6d0772c37a1a"
+  integrity sha1-bKpW1SBnNFD9XPvGlx5tB3LDeho=
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
