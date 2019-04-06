@@ -6,16 +6,21 @@ import Ember from 'ember';
 import * as Ladda from 'ladda';
 
 export default Component.extend({
+  laddaButton: Ember.inject.service(),
+
+  // meant to be overriden
+  text: '',
+  buttonStyle: '',
+  action: () => Ember.RSVP.resolve(),
+
   layout,
   ladda: null,
   tagName: 'button',
-  attributeBindings: ['buttonStyle:data-style', 'type'],
-
-  text: '',
-  buttonStyle: 'expand-right',
-  action: () => Ember.RSVP.resolve(),
+  _buttonStyle: Ember.computed.or('buttonStyle', 'laddaButton.buttonStyle'),
+  attributeBindings: ['_buttonStyle:data-style', 'type'],
 
   didInsertElement() {
+    console.log(this.get('laddaButton.buttonStyle'))
     this.set('ladda', Ladda.create(document.getElementById(this.get('elementId'))));
   },
 
