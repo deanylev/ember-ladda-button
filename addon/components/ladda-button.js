@@ -17,7 +17,7 @@ export default Component.extend({
   ladda: null,
   tagName: 'button',
   _buttonStyle: Ember.computed.or('buttonStyle', 'laddaButton.buttonStyle'),
-  attributeBindings: ['_buttonStyle:data-style', 'type'],
+  attributeBindings: ['_buttonStyle:data-style', 'disabled', 'type'],
 
   didInsertElement() {
     this.set('ladda', Ladda.create(document.getElementById(this.get('elementId'))));
