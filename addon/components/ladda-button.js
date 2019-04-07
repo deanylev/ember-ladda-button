@@ -20,7 +20,6 @@ export default Component.extend({
   attributeBindings: ['_buttonStyle:data-style', 'type'],
 
   didInsertElement() {
-    console.log(this.get('laddaButton.buttonStyle'))
     this.set('ladda', Ladda.create(document.getElementById(this.get('elementId'))));
   },
 
