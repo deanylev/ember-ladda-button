@@ -10,14 +10,29 @@ export default Component.extend({
 
   // meant to be overriden
   text: '',
-  buttonStyle: '',
+  buttonStyle: null,
+  spinnerSize: null,
+  spinnerColor: null,
+  spinnerLines: null,
   action: () => Ember.RSVP.resolve(),
 
   layout,
   ladda: null,
   tagName: 'button',
+
   _buttonStyle: Ember.computed.or('buttonStyle', 'laddaButton.buttonStyle'),
-  attributeBindings: ['_buttonStyle:data-style', 'disabled', 'type'],
+  _spinnerSize: Ember.computed.or('spinnerSize', 'laddaButton.spinnerSize'),
+  _spinnerColor: Ember.computed.or('spinnerColor', 'laddaButton.spinnerColor'),
+  _spinnerLines: Ember.computed.or('spinnerLines', 'laddaButton.spinnerLines'),
+
+  attributeBindings: [
+    '_buttonStyle:data-style',
+    '_spinnerSize:data-spinner-size',
+    '_spinnerColor:data-spinner-color',
+    '_spinnerLines:data-spinner-lines',
+    'disabled',
+    'type'
+  ],
 
   didInsertElement() {
     this.set('ladda', Ladda.create(document.getElementById(this.get('elementId'))));

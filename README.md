@@ -28,7 +28,7 @@ Usage
 {{ladda-button text="My Button" type="submit" buttonStyle="zoom-out" action=(action "functionThatReturnsPromise")}}
 ```
 
-You can set the default button style using the included service.
+You can set the default attributes using the included service.
 
 ```
 laddaButton: Ember.inject.service(),
@@ -37,6 +37,9 @@ init() {
   this._super(...arguments);
 
   this.set('laddaButton.buttonStyle', 'zoom-out');
+  this.set('laddaButton.spinnerSize', 30);
+  this.set('laddaButton.spinnerColor', '#007eff);
+  this.set('laddaButton.spinnerLines', 10);
 }
 ```
 
