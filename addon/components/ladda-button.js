@@ -1,5 +1,3 @@
-/* global Ladda */
-
 import Component from '@ember/component';
 import layout from '../templates/components/ladda-button';
 import Ember from 'ember';
