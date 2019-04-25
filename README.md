@@ -43,6 +43,10 @@ init() {
 }
 ```
 
+If the action passed to the button returns a promise, it will start spinning when clicked, and stop spinning when the promise resolve/rejects.
+
+Alternatively, you can pass an `inFlight` boolean attribute. When this attribute becomes true, the button will start spinning, and stop spinning when it becomes false.
+
 
 Contributing
 ------------------------------------------------------------------------------

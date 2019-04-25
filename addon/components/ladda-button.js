@@ -12,16 +12,14 @@ export default Component.extend({
   spinnerSize: null,
   spinnerColor: null,
   spinnerLines: null,
+  inFlight: false,
   action: () => Ember.RSVP.resolve(),
 
   layout,
   ladda: null,
   tagName: 'button',
 
-  _buttonStyle: Ember.computed.or('buttonStyle', 'laddaButton.buttonStyle'),
-  _spinnerSize: Ember.computed.or('spinnerSize', 'laddaButton.spinnerSize'),
-  _spinnerColor: Ember.computed.or('spinnerColor', 'laddaButton.spinnerColor'),
-  _spinnerLines: Ember.computed.or('spinnerLines', 'laddaButton.spinnerLines'),
+  _rendered: false,
 
   attributeBindings: [
     '_buttonStyle:data-style',
@@ -32,12 +30,58 @@ export default Component.extend({
     'type'
   ],
 
+  _buttonStyle: Ember.computed.or('buttonStyle', 'laddaButton.buttonStyle'),
+  _spinnerSize: Ember.computed.or('spinnerSize', 'laddaButton.spinnerSize'),
+  _spinnerColor: Ember.computed.or('spinnerColor', 'laddaButton.spinnerColor'),
+  _spinnerLines: Ember.computed.or('spinnerLines', 'laddaButton.spinnerLines'),
+
+  inFlightDidChange: Ember.observer('inFlight', function() {
+    this.updateLoadingState();
+  }),
+
+  init() {
+    this._super(...arguments);
+
+    this.set('_rendered', true);
+  },
+
   didInsertElement() {
+    this._super(...arguments);
+
     this.set('ladda', Ladda.create(document.getElementById(this.get('elementId'))));
+
+    if (this.get('inFlight')) {
+      Ember.run.next(() => {
+        this.updateLoadingState();
+      });
+    }
+  },
+
+  willDestroy() {
+    this.set('_rendered', false);
+
+    this._super(...arguments);
+  },
+
+  updateLoadingState() {
+    if (this.get('inFlight')) {
+      this.get('ladda').start();
+    } else {
+      this.get('ladda').stop();
+    }
   },
 
   click() {
-    this.get('ladda').start();
-    this.action().finally(() => this.get('ladda').stop());
+    const promise = this.action();
+    // duck typing instead of explicitly checking the instance
+    // class because it can be a Promise or RSVP.Promise
+    if (typeof promise.finally === 'function') {
+      this.set('inFlight', true);
+      promise.finally(() => {
+        if (this.get('_rendered')) {
+          this.set('inFlight', false);
+        }
+      });
+    }
   }
 });
