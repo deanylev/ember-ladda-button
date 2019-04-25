@@ -72,12 +72,12 @@ export default Component.extend({
   },
 
   click() {
-    const promise = this.action();
+    const maybePromise = this.action();
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
-    if (typeof promise.finally === 'function') {
+    if (typeof maybePromise.finally === 'function') {
       this.set('inFlight', true);
-      promise.finally(() => {
+      maybePromise.finally(() => {
         if (this.get('_rendered')) {
           this.set('inFlight', false);
         }
