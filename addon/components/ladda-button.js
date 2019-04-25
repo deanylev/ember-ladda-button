@@ -19,8 +19,6 @@ export default Component.extend({
   ladda: null,
   tagName: 'button',
 
-  _rendered: false,
-
   attributeBindings: [
     '_buttonStyle:data-style',
     '_spinnerSize:data-spinner-size',
@@ -39,12 +37,6 @@ export default Component.extend({
     this.updateLoadingState();
   }),
 
-  init() {
-    this._super(...arguments);
-
-    this.set('_rendered', true);
-  },
-
   didInsertElement() {
     this._super(...arguments);
 
@@ -55,12 +47,6 @@ export default Component.extend({
         this.updateLoadingState();
       });
     }
-  },
-
-  willDestroy() {
-    this.set('_rendered', false);
-
-    this._super(...arguments);
   },
 
   updateLoadingState() {
@@ -78,7 +64,7 @@ export default Component.extend({
     if (typeof maybePromise.finally === 'function') {
       this.set('inFlight', true);
       maybePromise.finally(() => {
-        if (this.get('_rendered')) {
+        if (!this.get('isDestroying') && !this.get('isDestroyed')) {
           this.set('inFlight', false);
         }
       });
