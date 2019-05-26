@@ -61,7 +61,7 @@ export default Component.extend({
     const maybePromise = this.action();
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
-    if (typeof maybePromise.finally === 'function') {
+    if (maybePromise && typeof maybePromise.finally === 'function') {
       this.set('inFlight', true);
       maybePromise.finally(() => {
         if (!this.get('isDestroying') && !this.get('isDestroyed')) {
