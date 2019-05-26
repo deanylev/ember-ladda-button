@@ -1,6 +1,6 @@
 {
   "name": "ember-ladda-button",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Ember wrapper for Ladda spinner buttons.",
   "keywords": [
     "ember-addon"
