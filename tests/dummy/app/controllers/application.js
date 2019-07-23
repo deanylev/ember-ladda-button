@@ -1,9 +1,10 @@
 import Controller from '@ember/controller';
+import { Promise } from 'rsvp';
 
 export default Controller.extend({
   actions: {
     test() {
-      return new Promise((resolve, reject) => setTimeout(resolve, 2000));
+      return new Promise((resolve) => setTimeout(resolve, 2000));
     }
   }
 });

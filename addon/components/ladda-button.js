@@ -2,7 +2,6 @@ import Component from '@ember/component';
 import * as Ladda from 'ladda';
 import layout from '../templates/components/ladda-button';
 import { inject } from '@ember/service';
-import { next } from '@ember/runloop';
 import { or } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 
@@ -10,17 +9,13 @@ export default Component.extend({
   laddaButton: inject(),
 
   // meant to be overriden
-  text: '',
+  action: () => resolve(),
   buttonStyle: null,
-  spinnerSize: null,
+  inFlight: false,
   spinnerColor: null,
   spinnerLines: null,
-  inFlight: false,
-  action: () => resolve(),
-
-  layout,
-  ladda: null,
-  tagName: 'button',
+  spinnerSize: null,
+  text: '',
 
   attributeBindings: [
     '_buttonStyle:data-style',
@@ -30,21 +25,23 @@ export default Component.extend({
     'disabled',
     'type'
   ],
+  layout,
+  tagName: 'button',
 
   _buttonStyle: or('buttonStyle', 'laddaButton.buttonStyle'),
-  _spinnerSize: or('spinnerSize', 'laddaButton.spinnerSize'),
   _spinnerColor: or('spinnerColor', 'laddaButton.spinnerColor'),
   _spinnerLines: or('spinnerLines', 'laddaButton.spinnerLines'),
+  _spinnerSize: or('spinnerSize', 'laddaButton.spinnerSize'),
+
+  ladda: null,
 
   didInsertElement() {
     this._super(...arguments);
 
-    this.set('ladda', Ladda.create(document.getElementById(this.get('elementId'))));
+    this.set('ladda', Ladda.create(this.element));
 
     if (this.get('inFlight')) {
-      next(() => {
-        this.updateLoadingState();
-      });
+      this.updateLoadingState();
     }
   },
 
@@ -52,6 +49,12 @@ export default Component.extend({
     this._super(...arguments);
 
     this.updateLoadingState();
+  },
+
+  willDestroy() {
+    this.get('ladda').remove();
+
+    this._super(...arguments);
   },
 
   updateLoadingState() {
