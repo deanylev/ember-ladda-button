@@ -1,10 +1,13 @@
 import Component from '@ember/component';
-import layout from '../templates/components/ladda-button';
-import Ember from 'ember';
 import * as Ladda from 'ladda';
+import layout from '../templates/components/ladda-button';
+import { inject } from '@ember/service';
+import { next } from '@ember/runloop';
+import { or } from '@ember/object/computed';
+import { resolve } from 'rsvp';
 
 export default Component.extend({
-  laddaButton: Ember.inject.service(),
+  laddaButton: inject(),
 
   // meant to be overriden
   text: '',
@@ -13,7 +16,7 @@ export default Component.extend({
   spinnerColor: null,
   spinnerLines: null,
   inFlight: false,
-  action: () => Ember.RSVP.resolve(),
+  action: () => resolve(),
 
   layout,
   ladda: null,
@@ -28,14 +31,10 @@ export default Component.extend({
     'type'
   ],
 
-  _buttonStyle: Ember.computed.or('buttonStyle', 'laddaButton.buttonStyle'),
-  _spinnerSize: Ember.computed.or('spinnerSize', 'laddaButton.spinnerSize'),
-  _spinnerColor: Ember.computed.or('spinnerColor', 'laddaButton.spinnerColor'),
-  _spinnerLines: Ember.computed.or('spinnerLines', 'laddaButton.spinnerLines'),
-
-  inFlightDidChange: Ember.observer('inFlight', function() {
-    this.updateLoadingState();
-  }),
+  _buttonStyle: or('buttonStyle', 'laddaButton.buttonStyle'),
+  _spinnerSize: or('spinnerSize', 'laddaButton.spinnerSize'),
+  _spinnerColor: or('spinnerColor', 'laddaButton.spinnerColor'),
+  _spinnerLines: or('spinnerLines', 'laddaButton.spinnerLines'),
 
   didInsertElement() {
     this._super(...arguments);
@@ -43,10 +42,16 @@ export default Component.extend({
     this.set('ladda', Ladda.create(document.getElementById(this.get('elementId'))));
 
     if (this.get('inFlight')) {
-      Ember.run.next(() => {
+      next(() => {
         this.updateLoadingState();
       });
     }
+  },
+
+  didUpdateAttrs() {
+    this._super(...arguments);
+
+    this.updateLoadingState();
   },
 
   updateLoadingState() {
@@ -63,9 +68,11 @@ export default Component.extend({
     // class because it can be a Promise or RSVP.Promise
     if (maybePromise && typeof maybePromise.finally === 'function') {
       this.set('inFlight', true);
+      this.updateLoadingState();
       maybePromise.finally(() => {
         if (!this.get('isDestroying') && !this.get('isDestroyed')) {
           this.set('inFlight', false);
+          this.updateLoadingState();
         }
       });
     }
