@@ -1,6 +1,6 @@
 {
   "name": "ember-ladda-button",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Ember wrapper for Ladda spinner buttons.",
   "keywords": [
     "ember-addon"
@@ -56,7 +56,7 @@
     "sass": "^1.22.9"
   },
   "engines": {
-    "node": "6.* || 8.* || >= 10.*"
+    "node": "8.* || 10.* || >= 12.*"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
