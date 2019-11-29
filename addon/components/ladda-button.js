@@ -11,22 +11,29 @@ export default Component.extend({
   // meant to be overriden
   action: () => resolve(),
   buttonStyle: null,
+  disabled: false,
   inFlight: false,
   spinnerColor: null,
   spinnerLines: null,
   spinnerSize: null,
   text: '',
+  type: 'button',
 
   attributeBindings: [
     '_buttonStyle:data-style',
     '_spinnerSize:data-spinner-size',
     '_spinnerColor:data-spinner-color',
     '_spinnerLines:data-spinner-lines',
-    'disabled',
+    '_disabled:disabled',
     'type'
   ],
   layout,
   tagName: 'button',
+
+  // Ladda usually disables/undisables depending on whether it's spinning
+  // or not, but this is incompatible with our bindings, so that behaviour
+  // is disabled in our fork, and we manage it with this instead
+  _disabled: or('disabled', 'inFlight'),
 
   _buttonStyle: or('buttonStyle', 'laddaButton.buttonStyle'),
   _spinnerColor: or('spinnerColor', 'laddaButton.spinnerColor'),

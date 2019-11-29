@@ -8163,10 +8163,9 @@ klaw@^3.0.0:
   dependencies:
     graceful-fs "^4.1.9"
 
-ladda@~2.0.1:
+ladda@deanylev/Ladda#60d6955a8b228403d6d1dc781d05deb6a73f0195:
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/ladda/-/ladda-2.0.1.tgz#523bb026dfbc804bb37615a08189405406198732"
-  integrity sha512-ynRaMdW9y9ABRdTUWa60HSQjtTkoEZMiQDzzYsX8yxIEm7mxL/sxpvoLutYox1XluRif3DxLDg+3Dl1wurjnJg==
+  resolved "https://codeload.github.com/deanylev/Ladda/tar.gz/60d6955a8b228403d6d1dc781d05deb6a73f0195"
   dependencies:
     spin.js "^4.0.0"
 

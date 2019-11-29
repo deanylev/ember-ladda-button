@@ -1,6 +1,6 @@
 {
   "name": "ember-ladda-button",
-  "version": "1.0.21",
+  "version": "1.0.23",
   "description": "Ember wrapper for Ladda spinner buttons.",
   "keywords": [
     "ember-addon"
@@ -25,7 +25,7 @@
     "ember-cli-babel": "^7.11.1",
     "ember-cli-htmlbars": "^4.0.5",
     "ember-cli-sass": "^10.0.1",
-    "ladda": "~2.0.1"
+    "ladda": "deanylev/Ladda#60d6955a8b228403d6d1dc781d05deb6a73f0195"
   },
   "devDependencies": {
     "@ember/optional-features": "^1.0.0",
