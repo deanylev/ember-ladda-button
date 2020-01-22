@@ -27,6 +27,7 @@ export default Component.extend({
     '_disabled:disabled',
     'type'
   ],
+  classNames: ['ladda-button'],
   layout,
   tagName: 'button',
 
