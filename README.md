@@ -1,15 +1,7 @@
 ember-ladda-button
 ==============================================================================
 
-Ember wrapper for Ladda spinner buttons. Note: these buttons are themeless, you will need to provide your own CSS to style them.
-
-
-Compatibility
-------------------------------------------------------------------------------
-
-* Ember.js v2.18 or above
-* Ember CLI v2.13 or above
-
+Ember wrapper for [Ladda](https://github.com/hakimel/Ladda) spinner buttons.
 
 Installation
 ------------------------------------------------------------------------------
@@ -18,43 +10,50 @@ Installation
 ember install ember-ladda-button
 ```
 
-
 Usage
 ------------------------------------------------------------------------------
 
-```
-{{#ladda-button buttonStyle="zoom-out" action=(action "functionThatReturnsPromise")}}My Button{{/ladda-button}}
+The button is themeless, so you will need to style it yourself.
 
-{{ladda-button text="My Button" type="submit" buttonStyle="zoom-out" action=(action "functionThatReturnsPromise")}}
-```
-
-You can set the default attributes using the included service.
+Example usage:
 
 ```
-laddaButton: Ember.inject.service(),
+<LaddaButton @action={{this.functionThatReturnsPromise}} @buttonStyle="expand-down">My Button</LaddaButton>
 
-init() {
-  this._super(...arguments);
+<LaddaButton @action={{this.functionThatDoesNotReturnPromise}} @buttonStyle="zoom-out" @inFlight={{this.inFlight}} @text="My Button" @type="submit" />
+```
 
-  this.set('laddaButton.buttonStyle', 'zoom-out');
-  this.set('laddaButton.spinnerSize', 30);
+You can set the default spinner style attributes using the included service:
+
+```
+@inject laddaButton,
+
+constructor() {
+  super(...arguments);
+
+  this.set('laddaButton.buttonStyle', 'expand-left');
   this.set('laddaButton.spinnerColor', '#007eff);
   this.set('laddaButton.spinnerLines', 10);
+  this.set('laddaButton.spinnerSize', 30);
 }
 ```
 
-If the action passed to the button returns a promise, it will start spinning when clicked, and stop spinning when the promise resolve/rejects.
+The arguments you can pass are:
 
-Alternatively, you can pass an `inFlight` boolean attribute. When this attribute becomes true, the button will start spinning, and stop spinning when it becomes false.
+* `action` - The function to call when the button is clicked. If this returns a promise, the button will start spinning when it is clicked, and stop spinning when the promise resolves or rejects
 
+* `buttonStyle` - How the spinner should appear while it is active - `'expand-left'` | `'expand-right'` | `'expand-up'` | `'expand-down'` | `'contract'` | `'contract-overlay'` | `'zoom-in'` | `'zoom-out'` | `'slide-left'` | `'slide-right'` | `'slide-up'` | `'slide-down'` - (defaults to `'expand-right'`)
 
-Contributing
-------------------------------------------------------------------------------
+* `disabled` - The `disabled` attribute for the button element - (defaults to `false`)
 
-See the [Contributing](CONTRIBUTING.md) guide for details.
+* `inFlight` - Whether the button should currently be spinning (alternative to returning a promise in `action`) - (defaults to `false`)
 
+* `spinnerColor` - The colour of the spinner - any valid CSS colour value - (defaults to `#fff`)
 
-License
-------------------------------------------------------------------------------
+* `spinnerLines` - The number of lines to be displayed in the spinner - (defaults to 12)
 
-This project is licensed under the [MIT License](LICENSE.md).
+* `spinnerSize`- Pixel dimensions of the spinner - (defaults to dynamic size based on the button height)
+
+* `text` - Text to be displayed on the button (alternative to passing a block)
+
+* `type` - The `type` attribute for the button element - `button` | `reset` | `submit` - (defaults to `button`)

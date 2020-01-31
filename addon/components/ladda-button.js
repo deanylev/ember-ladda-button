@@ -21,10 +21,10 @@ export default Component.extend({
 
   attributeBindings: [
     '_buttonStyle:data-style',
-    '_spinnerSize:data-spinner-size',
+    '_disabled:disabled',
     '_spinnerColor:data-spinner-color',
     '_spinnerLines:data-spinner-lines',
-    '_disabled:disabled',
+    '_spinnerSize:data-spinner-size',
     'type'
   ],
   classNames: ['ladda-button'],
