@@ -34,19 +34,20 @@ export default Component.extend({
   // Ladda usually disables/undisables depending on whether it's spinning
   // or not, but this is incompatible with our bindings, so that behaviour
   // is disabled in our fork, and we manage it with this instead
-  _disabled: or('disabled', 'inFlight'),
+  _disabled: or('disabled', 'inFlight', '_inFlightPromise'),
 
   _buttonStyle: or('buttonStyle', 'laddaButton.buttonStyle'),
   _spinnerColor: or('spinnerColor', 'laddaButton.spinnerColor'),
   _spinnerLines: or('spinnerLines', 'laddaButton.spinnerLines'),
   _spinnerSize: or('spinnerSize', 'laddaButton.spinnerSize'),
 
-  ladda: null,
+  _inFlightPromise: false,
+  _ladda: null,
 
   didInsertElement() {
     this._super(...arguments);
 
-    this.set('ladda', Ladda.create(this.element));
+    this.set('_ladda', Ladda.create(this.element));
 
     if (this.get('inFlight')) {
       this.updateLoadingState();
@@ -60,16 +61,18 @@ export default Component.extend({
   },
 
   willDestroy() {
-    this.get('ladda').remove();
+    this.get('_ladda').remove();
 
     this._super(...arguments);
   },
 
   updateLoadingState() {
-    if (this.get('inFlight')) {
-      this.get('ladda').start();
+    if (this.get('inFlight') || this.get('_inFlightPromise')) {
+      if (!this.get('_ladda').isLoading()) {
+        this.get('_ladda').start();
+      }
     } else {
-      this.get('ladda').stop();
+      this.get('_ladda').stop();
     }
   },
 
@@ -78,11 +81,11 @@ export default Component.extend({
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
     if (maybePromise && typeof maybePromise.finally === 'function') {
-      this.set('inFlight', true);
+      this.set('_inFlightPromise', true);
       this.updateLoadingState();
       maybePromise.finally(() => {
         if (!this.get('isDestroying') && !this.get('isDestroyed')) {
-          this.set('inFlight', false);
+          this.set('_inFlightPromise', false);
           this.updateLoadingState();
         }
       });
