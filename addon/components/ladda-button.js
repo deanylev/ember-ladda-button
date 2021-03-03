@@ -77,6 +77,10 @@ export default Component.extend({
   },
 
   click() {
+    if (this._disabled) {
+      return;
+    }
+
     const maybePromise = this.action();
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
