@@ -26,7 +26,7 @@ Example usage:
 You can set the default spinner style attributes using the included service:
 
 ```
-@service laddaButton,
+@service laddaButton;
 
 constructor() {
   super(...arguments);
