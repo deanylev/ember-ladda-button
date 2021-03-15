@@ -26,15 +26,15 @@ Example usage:
 You can set the default spinner style attributes using the included service:
 
 ```
-@inject laddaButton,
+@service laddaButton,
 
 constructor() {
   super(...arguments);
 
-  this.set('laddaButton.buttonStyle', 'expand-left');
-  this.set('laddaButton.spinnerColor', '#007eff);
-  this.set('laddaButton.spinnerLines', 10);
-  this.set('laddaButton.spinnerSize', 30);
+  this.laddaButton.buttonStyle = 'expand-left';
+  this.laddaButton.spinnerColor = '#007eff';
+  this.laddaButton.spinnerLines = 10;
+  this.laddaButton.spinnerSize = 30;
 }
 ```
 
