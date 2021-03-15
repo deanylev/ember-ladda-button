@@ -1,0 +1,20 @@
+<button
+  class="ladda-button {{@class}}"
+  data-spinner-color={{this.spinnerColor}}
+  data-spinner-lines={{this.spinnerLines}}
+  data-spinner-size={{this.spinnerSize}}
+  data-style={{this.buttonStyle}}
+  disabled={{this.disabled}}
+  type={{this.type}}
+  {{did-insert this.didInsert}}
+  {{did-update this.updateLoadingState @inFlight}}
+  {{on "click" this.handleClick}}
+>
+  <span class="ladda-label">
+    {{#if @text}}
+      {{@text}}
+    {{else}}
+      {{yield}}
+    {{/if}}
+  </span>
+</button>
