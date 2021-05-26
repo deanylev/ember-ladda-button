@@ -1,3 +1,12 @@
 <LaddaButton @action={{action "test"}} @spinnerColor="red" @spinnerLines={{10}} @spinnerSize={{20}}>
   My Button
 </LaddaButton>
+
+<LaddaButton @action={{action "test"}} @longDelay={{500}} @spinnerColor="red" @spinnerLines={{10}} @spinnerSize={{20}} as |longPress longProgress|>
+  {{#if longPress}}
+    Long
+  {{else}}
+    Short
+  {{/if}}
+  {{longProgress}}%
+</LaddaButton>
