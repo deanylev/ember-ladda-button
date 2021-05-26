@@ -10,12 +10,13 @@ import { LaddaButton as Ladda, create } from 'ladda';
 import LaddaButtonService, { ButtonStyle } from 'ember-ladda-button/services/ladda-button';
 
 interface Action {
-  (longPress: boolean): unknown;
-  (longPress: boolean): Promise<unknown>;
+  (): unknown;
+  (): Promise<unknown>;
 }
 
 interface Args {
   action?: Action;
+  actionLong?: Action;
   buttonStyle?: ButtonStyle;
   class?: string;
   disabled?: boolean;
@@ -31,9 +32,11 @@ interface Args {
 export default class LaddaButton extends Component<Args> {
   @service declare laddaButton: LaddaButtonService;
 
+  @tracked inFlightLong = false;
   @tracked inFlightPromise = false;
   ladda: null | Ladda = null;
   longLater: EmberRunTimer | null = null;
+  longInFlightLater: EmberRunTimer | null = null;
   @tracked longPress = false;
   @tracked longProgress = 0;
   longProgressInterval: number | null = null;
@@ -50,7 +53,7 @@ export default class LaddaButton extends Component<Args> {
   }
 
   get inFlight() {
-    return this.args.inFlight || this.inFlightPromise
+    return this.args.inFlight || this.inFlightLong || this.inFlightPromise
   }
 
   get spinnerColor() {
@@ -70,6 +73,11 @@ export default class LaddaButton extends Component<Args> {
   }
 
   cancelLongTimers() {
+    if (this.longInFlightLater) {
+      cancel(this.longInFlightLater);
+      this.longInFlightLater = null;
+    }
+
     if (this.longLater) {
       cancel(this.longLater);
       this.longLater = null;
@@ -82,8 +90,10 @@ export default class LaddaButton extends Component<Args> {
   }
 
   clearLongState() {
+    this.inFlightLong = false;
     this.longPress = false;
-    this.longProgress = 0;
+    this.updateLoadingState();
+    this.setLongProgress(0);
   }
 
   @action
@@ -97,19 +107,19 @@ export default class LaddaButton extends Component<Args> {
 
   @action
   handleClick() {
-    const { action } = this.args;
-    if (!action || this.disabled) {
+    const { action, actionLong } = this.args;
+    if ((this.longPress ? !actionLong : !action) || this.disabled) {
       this.clearLongState();
       this.cancelLongTimers();
       return;
     }
 
     if (!this.longPress) {
-      this.longProgress = 0;
+      this.setLongProgress(0);
       this.cancelLongTimers();
     }
 
-    const maybePromise = action(this.longPress);
+    const maybePromise = this.longPress ? actionLong?.() : action?.();
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
     if (maybePromise && typeof (maybePromise as Promise<unknown>).finally === 'function') {
@@ -131,8 +141,13 @@ export default class LaddaButton extends Component<Args> {
   handleMouseDown() {
     const { longDelay } = this.args;
     if (longDelay) {
+      this.longInFlightLater = later(() => {
+        this.inFlightLong = true;
+        this.updateLoadingState();
+      }, 100);
+
       this.longLater = later(this, () => {
-        this.longProgress = 100;
+        this.setLongProgress(100);
         this.longPress = true;
 
         if (this.longProgressInterval) {
@@ -145,7 +160,8 @@ export default class LaddaButton extends Component<Args> {
       this.longProgressInterval = window.setInterval(() => {
         run(() => {
           const elapsed = performance.now() - startedAt;
-          this.longProgress = Math.round(elapsed / longDelay * 100);
+          const progress = elapsed / longDelay;
+          this.setLongProgress(Math.round(progress * 100));
         });
       }, 50);
     }
@@ -153,9 +169,13 @@ export default class LaddaButton extends Component<Args> {
 
   @action
   handleMouseLeave() {
-    this.longPress = false;
-    this.longProgress = 0;
+    this.clearLongState();
     this.cancelLongTimers();
+  }
+
+  setLongProgress(progress: number) {
+    this.longProgress = progress;
+    this.ladda?.setProgress(progress / 100);
   }
 
   @action

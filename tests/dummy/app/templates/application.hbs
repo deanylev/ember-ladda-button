@@ -2,7 +2,7 @@
   My Button
 </LaddaButton>
 
-<LaddaButton @action={{action "test"}} @longDelay={{500}} @spinnerColor="red" @spinnerLines={{10}} @spinnerSize={{20}} as |longPress longProgress|>
+<LaddaButton @action={{action "test"}} @actionLong={{action "test"}} @longDelay={{500}} @spinnerColor="red" @spinnerLines={{10}} @spinnerSize={{20}} as |longPress longProgress|>
   {{#if longPress}}
     Long
   {{else}}
