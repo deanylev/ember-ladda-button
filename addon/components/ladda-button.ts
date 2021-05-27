@@ -32,11 +32,9 @@ interface Args {
 export default class LaddaButton extends Component<Args> {
   @service declare laddaButton: LaddaButtonService;
 
-  @tracked inFlightLong = false;
   @tracked inFlightPromise = false;
   ladda: null | Ladda = null;
   longLater: EmberRunTimer | null = null;
-  longInFlightLater: EmberRunTimer | null = null;
   @tracked longPress = false;
   @tracked longProgress = 0;
   longProgressInterval: number | null = null;
@@ -53,7 +51,7 @@ export default class LaddaButton extends Component<Args> {
   }
 
   get inFlight() {
-    return this.args.inFlight || this.inFlightLong || this.inFlightPromise
+    return this.args.inFlight || this.inFlightPromise
   }
 
   get spinnerColor() {
@@ -73,11 +71,6 @@ export default class LaddaButton extends Component<Args> {
   }
 
   cancelLongTimers() {
-    if (this.longInFlightLater) {
-      cancel(this.longInFlightLater);
-      this.longInFlightLater = null;
-    }
-
     if (this.longLater) {
       cancel(this.longLater);
       this.longLater = null;
@@ -90,10 +83,8 @@ export default class LaddaButton extends Component<Args> {
   }
 
   clearLongState() {
-    this.inFlightLong = false;
     this.longPress = false;
-    this.updateLoadingState();
-    this.setLongProgress(0);
+    this.longProgress = 0;
   }
 
   @action
@@ -115,7 +106,7 @@ export default class LaddaButton extends Component<Args> {
     }
 
     if (!this.longPress) {
-      this.setLongProgress(0);
+      this.longProgress = 0;
       this.cancelLongTimers();
     }
 
@@ -141,13 +132,8 @@ export default class LaddaButton extends Component<Args> {
   handleMouseDown() {
     const { longDelay } = this.args;
     if (longDelay) {
-      this.longInFlightLater = later(() => {
-        this.inFlightLong = true;
-        this.updateLoadingState();
-      }, 100);
-
       this.longLater = later(this, () => {
-        this.setLongProgress(100);
+        this.longProgress = 100;
         this.longPress = true;
 
         if (this.longProgressInterval) {
@@ -161,7 +147,7 @@ export default class LaddaButton extends Component<Args> {
         run(() => {
           const elapsed = performance.now() - startedAt;
           const progress = elapsed / longDelay;
-          this.setLongProgress(Math.round(progress * 100));
+          this.longProgress = Math.round(progress * 100);
         });
       }, 50);
     }
@@ -171,11 +157,6 @@ export default class LaddaButton extends Component<Args> {
   handleMouseLeave() {
     this.clearLongState();
     this.cancelLongTimers();
-  }
-
-  setLongProgress(progress: number) {
-    this.longProgress = progress;
-    this.ladda?.setProgress(progress / 100);
   }
 
   @action
