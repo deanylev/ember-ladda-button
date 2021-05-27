@@ -16,11 +16,11 @@ interface Action {
 
 interface Args {
   action?: Action;
-  actionLong?: Action;
   buttonStyle?: ButtonStyle;
   class?: string;
   disabled?: boolean;
   inFlight?: boolean;
+  longAction?: Action;
   longDelay?: number;
   spinnerColor?: string;
   spinnerLines?: number;
@@ -107,8 +107,8 @@ export default class LaddaButton extends Component<Args> {
 
   @action
   handleClick() {
-    const { action, actionLong } = this.args;
-    if ((this.longPress ? !actionLong : !action) || this.disabled) {
+    const { action, longAction } = this.args;
+    if ((this.longPress ? !longAction : !action) || this.disabled) {
       this.clearLongState();
       this.cancelLongTimers();
       return;
@@ -119,7 +119,7 @@ export default class LaddaButton extends Component<Args> {
       this.cancelLongTimers();
     }
 
-    const maybePromise = this.longPress ? actionLong?.() : action?.();
+    const maybePromise = this.longPress ? longAction?.() : action?.();
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
     if (maybePromise && typeof (maybePromise as Promise<unknown>).finally === 'function') {
