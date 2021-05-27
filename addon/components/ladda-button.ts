@@ -51,7 +51,7 @@ export default class LaddaButton extends Component<Args> {
   }
 
   get inFlight() {
-    return this.args.inFlight || this.inFlightPromise
+    return this.args.inFlight || this.inFlightPromise;
   }
 
   get spinnerColor() {
@@ -119,11 +119,13 @@ export default class LaddaButton extends Component<Args> {
       (maybePromise as Promise<unknown>).finally(() => {
         if (!this.isDestroying) {
           this.inFlightPromise = false;
-          this.clearLongState();
+          if (!this.args.inFlight) {
+            this.clearLongState();
+          }
           this.updateLoadingState();
         }
       });
-    } else {
+    } else if (!this.args.inFlight) {
       this.clearLongState();
     }
   }
