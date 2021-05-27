@@ -1,4 +1,6 @@
 import { action } from '@ember/object';
+import { cancel, later, run } from '@ember/runloop';
+import { EmberRunTimer } from '@ember/runloop/types';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -18,6 +20,8 @@ interface Args {
   class?: string;
   disabled?: boolean;
   inFlight?: boolean;
+  longAction?: Action;
+  longDelay?: number;
   spinnerColor?: string;
   spinnerLines?: number;
   spinnerSize?: number;
@@ -30,6 +34,10 @@ export default class LaddaButton extends Component<Args> {
 
   @tracked inFlightPromise = false;
   ladda: null | Ladda = null;
+  longLater: EmberRunTimer | null = null;
+  @tracked longPress = false;
+  @tracked longProgress = 0;
+  longProgressInterval: number | null = null;
 
   get buttonStyle() {
     return this.args.buttonStyle ?? this.laddaButton.buttonStyle;
@@ -40,6 +48,10 @@ export default class LaddaButton extends Component<Args> {
   // is disabled in our fork, and we manage it with this instead
   get disabled() {
     return this.args.disabled || this.args.inFlight || this.inFlightPromise;
+  }
+
+  get inFlight() {
+    return this.args.inFlight || this.inFlightPromise;
   }
 
   get spinnerColor() {
@@ -58,6 +70,23 @@ export default class LaddaButton extends Component<Args> {
     return this.args.type ?? 'button';
   }
 
+  cancelLongTimers() {
+    if (this.longLater) {
+      cancel(this.longLater);
+      this.longLater = null;
+    }
+
+    if (this.longProgressInterval) {
+      clearInterval(this.longProgressInterval);
+      this.longProgressInterval = null;
+    }
+  }
+
+  clearLongState() {
+    this.longPress = false;
+    this.longProgress = 0;
+  }
+
   @action
   didInsert(element: HTMLButtonElement) {
     this.ladda = create(element);
@@ -69,12 +98,19 @@ export default class LaddaButton extends Component<Args> {
 
   @action
   handleClick() {
-    const { action } = this.args;
-    if (!action || this.disabled) {
+    const { action, longAction } = this.args;
+    if ((this.longPress ? !longAction : !action) || this.disabled) {
+      this.clearLongState();
+      this.cancelLongTimers();
       return;
     }
 
-    const maybePromise = action();
+    if (!this.longPress) {
+      this.longProgress = 0;
+      this.cancelLongTimers();
+    }
+
+    const maybePromise = this.longPress ? longAction?.() : action?.();
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
     if (maybePromise && typeof (maybePromise as Promise<unknown>).finally === 'function') {
@@ -83,15 +119,51 @@ export default class LaddaButton extends Component<Args> {
       (maybePromise as Promise<unknown>).finally(() => {
         if (!this.isDestroying) {
           this.inFlightPromise = false;
+          if (!this.args.inFlight) {
+            this.clearLongState();
+          }
           this.updateLoadingState();
         }
       });
+    } else if (!this.args.inFlight) {
+      this.clearLongState();
     }
   }
 
   @action
+  handleMouseDown() {
+    const { longDelay } = this.args;
+    if (longDelay) {
+      this.longLater = later(this, () => {
+        this.longProgress = 100;
+        this.longPress = true;
+
+        if (this.longProgressInterval) {
+          clearInterval(this.longProgressInterval);
+          this.longProgressInterval = null;
+        }
+      }, longDelay);
+
+      const startedAt = performance.now();
+      this.longProgressInterval = window.setInterval(() => {
+        run(() => {
+          const elapsed = performance.now() - startedAt;
+          const progress = elapsed / longDelay;
+          this.longProgress = Math.round(progress * 100);
+        });
+      }, 50);
+    }
+  }
+
+  @action
+  handleMouseLeave() {
+    this.clearLongState();
+    this.cancelLongTimers();
+  }
+
+  @action
   updateLoadingState() {
-    if (this.args.inFlight || this.inFlightPromise) {
+    if (this.inFlight) {
       if (!this.ladda?.isLoading()) {
         this.ladda?.start();
       }

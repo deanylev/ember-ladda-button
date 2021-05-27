@@ -9,12 +9,15 @@
   {{did-insert this.didInsert}}
   {{did-update this.updateLoadingState @inFlight}}
   {{on "click" this.handleClick}}
+  {{on "mousedown" this.handleMouseDown}}
+  {{on "mouseleave" this.handleMouseLeave}}
+  ...attributes
 >
   <span class="ladda-label">
     {{#if @text}}
       {{@text}}
     {{else}}
-      {{yield}}
+      {{yield this.longPress this.longProgress}}
     {{/if}}
   </span>
 </button>
