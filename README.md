@@ -70,7 +70,7 @@ The arguments you can pass are:
 
 * `longAction` - Identical to `action` except will be called after the button is held for `longDelay`ms (see below) (defaults to `undefined`)
 
-* `longDelay` - How many milliseconds it should take before the button has been considered long pressed (see `longAction`). If no value is passed, long press functionality will be disabled. A `.ladda-progress` div with a width equal to the percentage of time of this value that has passed been will be rendered inside of the button, which you can style yourself, i.e. if this value is `400` and the user has been holding for 100ms, this div will be 25% the width of the button (defaults to `undefined`)
+* `longDelay` - How many milliseconds it should take before the button has been considered long pressed (see `longAction`). If no value is passed, long press functionality will be disabled. `longPress` and `longProgress` are yielded when passing a block for updating the appearance (defaults to `undefined`)
 
 * `spinnerColor` - The colour of the spinner - any valid CSS colour value - (defaults to `#fff`)
 
