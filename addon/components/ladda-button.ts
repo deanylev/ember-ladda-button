@@ -38,6 +38,7 @@ export default class LaddaButton extends Component<Args> {
   @tracked longPress = false;
   @tracked longProgress = 0;
   longProgressInterval: number | null = null;
+  previousInFlight = false;
 
   get buttonStyle() {
     return this.args.buttonStyle ?? this.laddaButton.buttonStyle;
@@ -92,6 +93,7 @@ export default class LaddaButton extends Component<Args> {
     this.ladda = create(element);
 
     if (this.args.inFlight) {
+      this.previousInFlight = true;
       this.updateLoadingState();
     }
   }
@@ -163,6 +165,12 @@ export default class LaddaButton extends Component<Args> {
 
   @action
   updateLoadingState() {
+    if (this.previousInFlight !== this.args.inFlight ?? false) {
+      if (this.previousInFlight) {
+        this.clearLongState();
+      }
+      this.previousInFlight = this.args.inFlight ?? false;
+    }
     if (this.inFlight) {
       if (!this.ladda?.isLoading()) {
         this.ladda?.start();
