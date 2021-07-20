@@ -9,10 +9,7 @@ import { LaddaButton as Ladda, create } from 'ladda';
 
 import LaddaButtonService, { ButtonStyle } from 'ember-ladda-button/services/ladda-button';
 
-interface Action {
-  (): unknown;
-  (): Promise<unknown>;
-}
+type Action = (() => void) | (() => Promise<void>);
 
 interface Args {
   action?: Action;
@@ -115,10 +112,10 @@ export default class LaddaButton extends Component<Args> {
     const maybePromise = this.longPress ? longAction?.() : action?.();
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
-    if (maybePromise && typeof (maybePromise as Promise<unknown>).finally === 'function') {
+    if (maybePromise && typeof maybePromise.finally === 'function') {
       this.inFlightPromise = true;
       this.updateLoadingState();
-      (maybePromise as Promise<unknown>).finally(() => {
+      maybePromise.finally(() => {
         if (!this.isDestroying) {
           this.inFlightPromise = false;
           if (!this.args.inFlight) {
