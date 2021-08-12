@@ -161,6 +161,17 @@ export default class LaddaButton extends Component<Args> {
   }
 
   @action
+  handleTouchEnd(event: TouchEvent) {
+    const touch = event.changedTouches[0];
+    const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+    if (event.target instanceof Element && elements.includes(event.target)) {
+      this.handleClick();
+    } else {
+      this.handleMouseLeave();
+    }
+  }
+
+  @action
   updateLoadingState() {
     if (this.previousInFlight !== this.args.inFlight ?? false) {
       if (this.previousInFlight) {

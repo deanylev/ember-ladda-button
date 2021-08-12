@@ -11,6 +11,8 @@
   {{on "click" this.handleClick}}
   {{on "mousedown" this.handleMouseDown}}
   {{on "mouseleave" this.handleMouseLeave}}
+  {{on "touchstart" this.handleMouseDown}}
+  {{on "touchend" this.handleTouchEnd}}
   ...attributes
 >
   <span class="ladda-label">
