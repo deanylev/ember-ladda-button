@@ -162,6 +162,9 @@ export default class LaddaButton extends Component<Args> {
 
   @action
   handleTouchEnd(event: TouchEvent) {
+    // default behaviour causes an extra click after the action is called
+    event.preventDefault();
+
     const touch = event.changedTouches[0];
     const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
     if (event.target instanceof Element && elements.includes(event.target)) {
