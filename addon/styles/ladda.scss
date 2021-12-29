@@ -11,468 +11,476 @@
  * CONFIG
  */
 
- $spinnerSize: 32px !default;
+@use "sass:math";
+
+$spinnerSize: 32px !default;
 
 
- /*************************************
-  * MIXINS
-  */
+/*************************************
+ * MIXINS
+ */
 
- @mixin transition( $value ) {
-   transition: $value !important;
- }
+@mixin buttonColor( $name, $color ) {
+    &[data-color=#{$name}] {
+        background: $color;
 
- @mixin transform( $value ) {
-   transform: $value;
- }
-
- @mixin buttonColor( $name, $color ) {
-   &[data-color=#{$name}] {
-     background: $color;
-
-     &:hover {
-       background-color: lighten( $color, 5% );
-     }
-   }
- }
+        &:hover {
+            background-color: lighten( $color, 5% );
+        }
+    }
+}
 
 
- /*************************************
-  * Opacity animation for spin.js
-  */
+/*************************************
+ * Opacity animation for spin.js
+ */
 
- @keyframes ladda-spinner-line-fade {
-   0%, 100% {
-     opacity: 0.22; /* minimum opacity */
-   }
-   1% {
-     opacity: 1;
-   }
- }
-
-
- /*************************************
-  * BUTTON BASE
-  */
-
- .ladda-button {
-   position: relative;
- }
+@keyframes ladda-spinner-line-fade {
+  0%, 100% {
+    opacity: 0.22; /* minimum opacity */
+  }
+  1% {
+    opacity: 1;
+  }
+}
 
 
- /* Spinner animation */
- .ladda-button .ladda-spinner {
-   position: absolute;
-   z-index: 2;
-   display: inline-block;
-   width: $spinnerSize;
-   top: 50%;
-   margin-top: 0;
-   opacity: 0;
-   pointer-events: none;
- }
+/*************************************
+ * BUTTON BASE
+ */
 
- /* Button label */
- .ladda-button .ladda-label {
-   position: relative;
-   z-index: 3;
- }
-
- /* Progress bar */
- .ladda-button .ladda-progress {
-   position: absolute;
-   width: 0;
-   height: 100%;
-   left: 0;
-   top: 0;
-   background: rgba( 0, 0, 0, 0.2 );
-   display: none;
-
-   @include transition( 0.1s linear all );
- }
-   .ladda-button[data-loading] .ladda-progress {
-     display: block;
-   }
+.ladda-button {
+    position: relative;
+}
 
 
- /*************************************
-  * EASING
-  */
+/* Spinner animation */
+.ladda-button .ladda-spinner {
+    position: absolute;
+    z-index: 2;
+    display: inline-block;
+    width: $spinnerSize;
+    top: 50%;
+    margin-top: 0;
+    opacity: 0;
+    pointer-events: none;
+}
 
- .ladda-button,
- .ladda-button .ladda-spinner,
- .ladda-button .ladda-label {
-   @include transition( 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) all );
- }
+/* Button label */
+.ladda-button .ladda-label {
+    position: relative;
+    z-index: 3;
+}
 
- .ladda-button[data-style=zoom-in],
- .ladda-button[data-style=zoom-in] .ladda-spinner,
- .ladda-button[data-style=zoom-in] .ladda-label,
- .ladda-button[data-style=zoom-out],
- .ladda-button[data-style=zoom-out] .ladda-spinner,
- .ladda-button[data-style=zoom-out] .ladda-label {
-   @include transition( 0.3s ease all );
- }
+/* Progress bar */
+.ladda-button .ladda-progress {
+    position: absolute;
+    width: 0;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba( 0, 0, 0, 0.2 );
+    display: none;
+    transition: 0.1s linear all;
+}
 
-
- /*************************************
-  * EXPAND RIGHT
-  */
-
- .ladda-button[data-style=expand-right] {
-   .ladda-spinner {
-     right: $spinnerSize/-2 + 10;
-   }
-
-   &[data-size="s"] .ladda-spinner,
-   &[data-size="xs"] .ladda-spinner {
-     right: $spinnerSize/-2 + 4;
-   }
-
-   &[data-loading] {
-     padding-right: 56px;
-
-     .ladda-spinner {
-       opacity: 1;
-     }
-
-     &[data-size="s"],
-     &[data-size="xs"] {
-       padding-right: 40px;
-     }
-   }
- }
+.ladda-button[data-loading] .ladda-progress {
+    display: block;
+}
 
 
- /*************************************
-  * EXPAND LEFT
-  */
+/*************************************
+ * EASING
+ */
 
- .ladda-button[data-style=expand-left] {
-   .ladda-spinner {
-     left: $spinnerSize/2 + 10;
-   }
+.ladda-button,
+.ladda-button .ladda-spinner,
+.ladda-button .ladda-label {
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) all;
+}
 
-   &[data-size="s"] .ladda-spinner,
-   &[data-size="xs"] .ladda-spinner {
-     left: 4px;
-   }
-
-   &[data-loading] {
-     padding-left: 56px;
-
-     .ladda-spinner {
-       opacity: 1;
-     }
-
-     &[data-size="s"],
-     &[data-size="xs"] {
-       padding-left: 40px;
-     }
-   }
- }
+.ladda-button[data-style=zoom-in],
+.ladda-button[data-style=zoom-in] .ladda-spinner,
+.ladda-button[data-style=zoom-in] .ladda-label,
+.ladda-button[data-style=zoom-out],
+.ladda-button[data-style=zoom-out] .ladda-spinner,
+.ladda-button[data-style=zoom-out] .ladda-label {
+    transition: 0.3s ease all;
+}
 
 
- /*************************************
-  * EXPAND UP
-  */
+/*************************************
+ * EXPAND RIGHT
+ */
 
- .ladda-button[data-style=expand-up] {
-   overflow: hidden;
-
-   .ladda-spinner {
-     top: -$spinnerSize;
-     left: 50%;
-     margin-left: 0;
-   }
-
-   &[data-loading] {
-     padding-top: 54px;
-
-     .ladda-spinner {
-       opacity: 1;
-       top: ($spinnerSize/ 2) + 10;
-       margin-top: 0;
-     }
-
-     &[data-size="s"],
-     &[data-size="xs"] {
-       padding-top: 32px;
-
-       .ladda-spinner {
-         top: 4px;
-       }
-     }
-   }
- }
-
-
- /*************************************
-  * EXPAND DOWN
-  */
-
-  .ladda-button[data-style=expand-down] {
-    overflow: hidden;
-
+.ladda-button[data-style=expand-right] {
     .ladda-spinner {
-      top: 62px;
-      left: 50%;
-      margin-left: 0;
+        right: math.div($spinnerSize, -2) + 10;
     }
 
     &[data-size="s"] .ladda-spinner,
     &[data-size="xs"] .ladda-spinner {
-      top: 40px;
+        right: math.div($spinnerSize, -2) + 4;
     }
 
     &[data-loading] {
-      padding-bottom: 54px;
+        padding-right: 56px;
 
-      .ladda-spinner {
-        opacity: 1;
-      }
+        .ladda-spinner {
+            opacity: 1;
+        }
 
-      &[data-size="s"],
-      &[data-size="xs"] {
-        padding-bottom: 32px;
-      }
+        &[data-size="s"],
+        &[data-size="xs"] {
+            padding-right: 40px;
+        }
     }
-  }
+}
 
 
- /*************************************
-  * SLIDE LEFT
-  */
- .ladda-button[data-style=slide-left] {
-   overflow: hidden;
+/*************************************
+ * EXPAND LEFT
+ */
 
-   .ladda-label {
-     position: relative;
-   }
-   .ladda-spinner {
-     left: 100%;
-     margin-left: 0;
-   }
+.ladda-button[data-style=expand-left] {
+    .ladda-spinner {
+        left: $spinnerSize * 0.5 + 10;
+    }
 
-   &[data-loading] {
-     .ladda-label {
-       opacity: 0;
-       left: -100%;
-     }
-     .ladda-spinner {
-       opacity: 1;
-       left: 50%;
-     }
-   }
+    &[data-size="s"] .ladda-spinner,
+    &[data-size="xs"] .ladda-spinner {
+        left: 4px;
+    }
+
+    &[data-loading] {
+        padding-left: 56px;
+
+        .ladda-spinner {
+            opacity: 1;
+        }
+
+        &[data-size="s"],
+        &[data-size="xs"] {
+            padding-left: 40px;
+        }
+    }
+}
+
+
+/*************************************
+ * EXPAND UP
+ */
+
+.ladda-button[data-style=expand-up] {
+    overflow: hidden;
+
+    .ladda-spinner {
+        top: -$spinnerSize;
+        left: 50%;
+        margin-left: 0;
+    }
+
+    &[data-loading] {
+        padding-top: 54px;
+
+        .ladda-spinner {
+            opacity: 1;
+            top: ($spinnerSize * 0.5) + 10;
+            margin-top: 0;
+        }
+
+        &[data-size="s"],
+        &[data-size="xs"] {
+            padding-top: 32px;
+
+            .ladda-spinner {
+                top: 4px;
+            }
+        }
+    }
+}
+
+
+/*************************************
+ * EXPAND DOWN
+ */
+
+ .ladda-button[data-style=expand-down] {
+    overflow: hidden;
+
+    .ladda-spinner {
+        top: 62px;
+        left: 50%;
+        margin-left: 0;
+    }
+
+    &[data-size="s"] .ladda-spinner,
+    &[data-size="xs"] .ladda-spinner {
+        top: 40px;
+    }
+
+    &[data-loading] {
+        padding-bottom: 54px;
+
+        .ladda-spinner {
+            opacity: 1;
+        }
+
+        &[data-size="s"],
+        &[data-size="xs"] {
+            padding-bottom: 32px;
+        }
+    }
  }
 
 
- /*************************************
-  * SLIDE RIGHT
-  */
- .ladda-button[data-style=slide-right] {
-   overflow: hidden;
+/*************************************
+ * SLIDE LEFT
+ */
+.ladda-button[data-style=slide-left] {
+    overflow: hidden;
 
-   .ladda-label {
-     position: relative;
-   }
-   .ladda-spinner {
-     right: 100%;
-     margin-left: 0;
-     left: $spinnerSize/2;
+    .ladda-label {
+        position: relative;
+    }
 
-     [dir="rtl"] & {
-       right: auto;
-     }
-   }
+    .ladda-spinner {
+        left: 100%;
+        margin-left: 0;
+    }
 
-   &[data-loading] {
-     .ladda-label {
-       opacity: 0;
-       left: 100%;
-     }
-     .ladda-spinner {
-       opacity: 1;
-       left: 50%;
-     }
-   }
- }
+    &[data-loading] {
+        .ladda-label {
+            opacity: 0;
+            left: -100%;
+        }
+
+        .ladda-spinner {
+            opacity: 1;
+            left: 50%;
+        }
+    }
+}
 
 
- /*************************************
-  * SLIDE UP
-  */
- .ladda-button[data-style=slide-up] {
-   overflow: hidden;
+/*************************************
+ * SLIDE RIGHT
+ */
+.ladda-button[data-style=slide-right] {
+    overflow: hidden;
 
-   .ladda-label {
-     position: relative;
-   }
-   .ladda-spinner {
-     left: 50%;
-     margin-left: 0;
-     margin-top: 1em;
-   }
+    .ladda-label {
+        position: relative;
+    }
 
-   &[data-loading] {
-     .ladda-label {
-       opacity: 0;
-       top: -1em;
-     }
-     .ladda-spinner {
-       opacity: 1;
-       margin-top: 0;
-     }
-   }
- }
+    .ladda-spinner {
+        right: 100%;
+        margin-left: 0;
+        left: $spinnerSize * 0.5;
 
+        [dir="rtl"] & {
+            right: auto;
+        }
+    }
 
- /*************************************
-  * SLIDE DOWN
-  */
- .ladda-button[data-style=slide-down] {
-   overflow: hidden;
+    &[data-loading] {
+        .ladda-label {
+            opacity: 0;
+            left: 100%;
+        }
 
-   .ladda-label {
-     position: relative;
-   }
-   .ladda-spinner {
-     left: 50%;
-     margin-left: 0;
-     margin-top: -2em;
-   }
-
-   &[data-loading] {
-     .ladda-label {
-       opacity: 0;
-       top: 1em;
-     }
-     .ladda-spinner {
-       opacity: 1;
-       margin-top: 0;
-     }
-   }
- }
+        .ladda-spinner {
+            opacity: 1;
+            left: 50%;
+        }
+    }
+}
 
 
- /*************************************
-  * ZOOM-OUT
-  */
+/*************************************
+ * SLIDE UP
+ */
+.ladda-button[data-style=slide-up] {
+    overflow: hidden;
 
- .ladda-button[data-style=zoom-out] {
-   overflow: hidden;
- }
-   .ladda-button[data-style=zoom-out] .ladda-spinner {
-     left: 50%;
-     margin-left: $spinnerSize;
+    .ladda-label {
+        position: relative;
+    }
 
-     @include transform( scale( 2.5 ) );
-   }
-   .ladda-button[data-style=zoom-out] .ladda-label {
-     position: relative;
-     display: inline-block;
-   }
+    .ladda-spinner {
+        left: 50%;
+        margin-left: 0;
+        margin-top: 1em;
+    }
 
- .ladda-button[data-style=zoom-out][data-loading] .ladda-label {
-   opacity: 0;
+    &[data-loading] {
+        .ladda-label {
+            opacity: 0;
+            top: -1em;
+        }
 
-   @include transform( scale( 0.5 ) );
- }
- .ladda-button[data-style=zoom-out][data-loading] .ladda-spinner {
-   opacity: 1;
-   margin-left: 0;
-
-   @include transform( none );
- }
-
-
- /*************************************
-  * ZOOM-IN
-  */
-
- .ladda-button[data-style=zoom-in] {
-   overflow: hidden;
- }
-   .ladda-button[data-style=zoom-in] .ladda-spinner {
-     left: 50%;
-     margin-left: $spinnerSize/-2;
-
-     @include transform( scale( 0.2 ) );
-   }
-   .ladda-button[data-style=zoom-in] .ladda-label {
-     position: relative;
-     display: inline-block;
-   }
-
- .ladda-button[data-style=zoom-in][data-loading] .ladda-label {
-   opacity: 0;
-
-   @include transform( scale( 2.2 ) );
- }
- .ladda-button[data-style=zoom-in][data-loading] .ladda-spinner {
-   opacity: 1;
-   margin-left: 0;
-
-   @include transform( none );
- }
+        .ladda-spinner {
+            opacity: 1;
+            margin-top: 0;
+        }
+    }
+}
 
 
- /*************************************
-  * CONTRACT
-  */
+/*************************************
+ * SLIDE DOWN
+ */
+.ladda-button[data-style=slide-down] {
+    overflow: hidden;
 
- .ladda-button[data-style=contract] {
-   overflow: hidden;
-   width: 100px;
- }
-   .ladda-button[data-style=contract] .ladda-spinner {
-     left: 50%;
-     margin-left: 0;
-   }
+    .ladda-label {
+        position: relative;
+    }
 
- .ladda-button[data-style=contract][data-loading] {
-   border-radius: 50%;
-   width: 52px;
- }
-   .ladda-button[data-style=contract][data-loading] .ladda-label {
-     opacity: 0;
-   }
-   .ladda-button[data-style=contract][data-loading] .ladda-spinner {
-     opacity: 1;
-   }
+    .ladda-spinner {
+        left: 50%;
+        margin-left: 0;
+        margin-top: -2em;
+    }
 
+    &[data-loading] {
+        .ladda-label {
+            opacity: 0;
+            top: 1em;
+        }
 
-
- /*************************************
-  * OVERLAY
-  */
-
- .ladda-button[data-style=contract-overlay] {
-   overflow: hidden;
-   width: 100px;
-
-   box-shadow: 0px 0px 0px 2000px rgba(0,0,0,0);
- }
-   .ladda-button[data-style=contract-overlay] .ladda-spinner {
-     left: 50%;
-     margin-left: 0;
-   }
-
- .ladda-button[data-style=contract-overlay][data-loading] {
-   border-radius: 50%;
-   width: 52px;
-
-   /*outline: 10000px solid rgba( 0, 0, 0, 0.5 );*/
-   box-shadow: 0px 0px 0px 2000px rgba(0,0,0,0.8);
- }
-   .ladda-button[data-style=contract-overlay][data-loading] .ladda-label {
-     opacity: 0;
-   }
-   .ladda-button[data-style=contract-overlay][data-loading] .ladda-spinner {
-     opacity: 1;
-   }
+        .ladda-spinner {
+            opacity: 1;
+            margin-top: 0;
+        }
+    }
+}
 
 
- [dir="rtl"] .ladda-spinner > div {
-   left: 25% !important;
- }
+/*************************************
+ * ZOOM-OUT
+ */
+
+.ladda-button[data-style=zoom-out] {
+    overflow: hidden;
+
+    .ladda-label {
+        position: relative;
+        display: inline-block;
+    }
+
+    .ladda-spinner {
+        left: 50%;
+        margin-left: $spinnerSize;
+        transform: scale(2.5);
+    }
+
+    &[data-loading] {
+        .ladda-label {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .ladda-spinner {
+            opacity: 1;
+            margin-left: 0;
+            transform: none;
+        }
+    }
+}
+
+
+/*************************************
+ * ZOOM-IN
+ */
+
+.ladda-button[data-style=zoom-in] {
+    overflow: hidden;
+
+    .ladda-label {
+        position: relative;
+        display: inline-block;
+    }
+
+    .ladda-spinner {
+        left: 50%;
+        margin-left: math.div($spinnerSize, -2);
+        transform: scale(0.2);
+    }
+    
+    &[data-loading] {
+        .ladda-label {
+            opacity: 0;
+            transform: scale(2.2);
+        }
+
+        .ladda-spinner {
+            opacity: 1;
+            margin-left: 0;
+            transform: none;
+        }
+    }
+}
+
+
+/*************************************
+ * CONTRACT
+ */
+
+.ladda-button[data-style=contract] {
+    overflow: hidden;
+    width: 100px;
+
+    .ladda-spinner {
+        left: 50%;
+        margin-left: 0;
+    }
+
+    &[data-loading] {
+        border-radius: 50%;
+        width: 52px;
+
+        .ladda-label {
+            opacity: 0;
+        }
+
+        .ladda-spinner {
+            opacity: 1;
+        }
+    }
+}
+
+
+/*************************************
+ * OVERLAY
+ */
+
+.ladda-button[data-style=contract-overlay] {
+    overflow: hidden;
+    width: 100px;
+    box-shadow: 0px 0px 0px 2000px rgba(0,0,0,0);
+    
+    .ladda-spinner {
+        left: 50%;
+        margin-left: 0;
+    }
+    
+    &[data-loading] {
+        border-radius: 50%;
+        width: 52px;
+        box-shadow: 0px 0px 0px 2000px rgba(0,0,0,0.8);
+
+        .ladda-label {
+            opacity: 0;
+        }
+
+        .ladda-spinner {
+            opacity: 1;
+        }
+    }
+}
+
+
+[dir="rtl"] .ladda-spinner > div {
+    left: 25% !important;
+}
