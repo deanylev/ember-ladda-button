@@ -11,7 +11,7 @@ import LaddaButtonService, { ButtonStyle } from 'ember-ladda-button/services/lad
 
 type Action = (() => void) | (() => Promise<void>);
 
-interface Args {
+export interface LaddaButtonArgs {
   action?: Action;
   buttonStyle?: ButtonStyle;
   class?: string;
@@ -26,7 +26,7 @@ interface Args {
   type?: 'button' | 'reset' | 'submit';
 }
 
-export default class LaddaButton extends Component<Args> {
+export default class LaddaButton extends Component<LaddaButtonArgs> {
   @service declare laddaButton: LaddaButtonService;
 
   @tracked inFlightPromise = false;
