@@ -8852,9 +8852,9 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-ladda@deanylev/Ladda#60d6955a8b228403d6d1dc781d05deb6a73f0195:
+"ladda@https://github.com/deanylev/Ladda#983851b4134b7d3087bbe803eb7f7c72af32f47c":
   version "2.0.1"
-  resolved "https://codeload.github.com/deanylev/Ladda/tar.gz/60d6955a8b228403d6d1dc781d05deb6a73f0195"
+  resolved "https://github.com/deanylev/Ladda#983851b4134b7d3087bbe803eb7f7c72af32f47c"
   dependencies:
     spin.js "^4.0.0"
 

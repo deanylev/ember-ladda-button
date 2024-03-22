@@ -35,7 +35,7 @@
     "ember-cli-htmlbars": "^5.3.2",
     "ember-cli-sass": "^10.0.1",
     "ember-cli-typescript": "^4.1.0",
-    "ladda": "deanylev/Ladda#983851b4134b7d3087bbe803eb7f7c72af32f47c"
+    "ladda": "https://github.com/deanylev/Ladda#983851b4134b7d3087bbe803eb7f7c72af32f47c"
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
