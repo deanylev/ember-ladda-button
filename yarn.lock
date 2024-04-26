@@ -1871,6 +1871,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@deanylev/ladda@^2.0.3-ember-ladda-button":
+  version "2.0.3-ember-ladda-button"
+  resolved "https://registry.yarnpkg.com/@deanylev/ladda/-/ladda-2.0.3-ember-ladda-button.tgz#71934ef8b94e6acca2e81836d20d95fd7ff13dd3"
+  integrity sha512-Xqnqfac++F0vGaZtRSb/JMS0InIPNgd/EDJnvy3g2+LpupRNm+wgj7VCmVcuP0p6AOKiulaTqHdZTnilVQSmXQ==
+  dependencies:
+    spin.js "^4.1.1"
+
 "@ember-data/rfc395-data@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@ember-data/rfc395-data/-/rfc395-data-0.0.4.tgz#ecb86efdf5d7733a76ff14ea651a1b0ed1f8a843"
@@ -8852,12 +8859,6 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-"ladda@https://github.com/deanylev/Ladda#983851b4134b7d3087bbe803eb7f7c72af32f47c":
-  version "2.0.1"
-  resolved "https://github.com/deanylev/Ladda#983851b4134b7d3087bbe803eb7f7c72af32f47c"
-  dependencies:
-    spin.js "^4.0.0"
-
 leek@0.0.24:
   version "0.0.24"
   resolved "https://registry.yarnpkg.com/leek/-/leek-0.0.24.tgz#e400e57f0e60d8ef2bd4d068dc428a54345dbcda"
@@ -11562,10 +11563,10 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.7.tgz#e9c18a410e5ed7e12442a549fbd8afa767038d65"
   integrity sha512-U+MTEOO0AiDzxwFvoa4JVnMV6mZlJKk2sBLt90s7G0Gd0Mlknc7kxEn3nuDPNZRta7O2uy8oLcZLVT+4sqNZHQ==
 
-spin.js@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/spin.js/-/spin.js-4.1.0.tgz#afcf12738fafd5f6aa0a385a5b4cec45c86a3555"
-  integrity sha512-WI8O1OdJlKjialIhB9Z5RfFFM4pI7Hohik76bB3N4Ep3N/vTDPZiRU8QeefyLbmpI5n2bFQXgticl2g+/KiKYA==
+spin.js@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/spin.js/-/spin.js-4.1.1.tgz#567464a08620541e523da856cb5f67af2d0f48ad"
+  integrity sha512-3cjbjZBw8TmZmvzcmlXqArUpefJ1vGgQZ+dh1CdyDyxZZNxNmw+2Dq5jyoP/OCqQP+z78rWgSJX9m3uMuGaxxw==
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"

@@ -28,14 +28,14 @@
     "postpack": "ember ts:clean"
   },
   "dependencies": {
+    "@deanylev/ladda": "^2.0.3-ember-ladda-button",
     "@ember/render-modifiers": "^2.1.0",
     "@glimmer/tracking": "^1.0.3",
     "ember-auto-import": "^1.10.1",
     "ember-cli-babel": "^7.23.1",
     "ember-cli-htmlbars": "^5.3.2",
     "ember-cli-sass": "^10.0.1",
-    "ember-cli-typescript": "^4.1.0",
-    "ladda": "https://github.com/deanylev/Ladda#983851b4134b7d3087bbe803eb7f7c72af32f47c"
+    "ember-cli-typescript": "^4.1.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",

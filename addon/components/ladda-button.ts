@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import { LaddaButton as Ladda, create } from 'ladda';
+import { LaddaButton as Ladda, create } from '@deanylev/ladda';
 
 import LaddaButtonService, { ButtonStyle } from 'ember-ladda-button/services/ladda-button';
 
