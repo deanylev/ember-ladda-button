@@ -9,7 +9,8 @@ import { LaddaButton as Ladda, create } from '@deanylev/ladda';
 
 import LaddaButtonService, { ButtonStyle } from 'ember-ladda-button/services/ladda-button';
 
-type Action = (() => void) | (() => Promise<void>);
+export type ActionEvent = MouseEvent | TouchEvent;
+type Action = ((event: ActionEvent) => void) | ((event: ActionEvent) => Promise<void>);
 
 export interface LaddaButtonArgs {
   action?: Action;
@@ -96,7 +97,7 @@ export default class LaddaButton extends Component<LaddaButtonArgs> {
   }
 
   @action
-  handleClick() {
+  handleClick(event: ActionEvent) {
     const { action, longAction } = this.args;
     if ((this.longPress ? !longAction : !action) || this.disabled) {
       this.clearLongState();
@@ -109,7 +110,7 @@ export default class LaddaButton extends Component<LaddaButtonArgs> {
       this.cancelLongTimers();
     }
 
-    const maybePromise = this.longPress ? longAction?.() : action?.();
+    const maybePromise = this.longPress ? longAction?.(event) : action?.(event);
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
     if (maybePromise && typeof maybePromise.finally === 'function') {
@@ -168,7 +169,7 @@ export default class LaddaButton extends Component<LaddaButtonArgs> {
     const touch = event.changedTouches[0];
     const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
     if (event.target instanceof Element && elements.includes(event.target)) {
-      this.handleClick();
+      this.handleClick(event);
     } else {
       this.handleMouseLeave();
     }
@@ -176,7 +177,7 @@ export default class LaddaButton extends Component<LaddaButtonArgs> {
 
   @action
   updateLoadingState() {
-    if (this.previousInFlight !== this.args.inFlight ?? false) {
+    if (this.previousInFlight !== this.args.inFlight) {
       if (this.previousInFlight) {
         this.clearLongState();
       }
