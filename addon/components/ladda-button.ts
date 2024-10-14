@@ -10,15 +10,30 @@ import { LaddaButton as Ladda, create } from '@deanylev/ladda';
 import LaddaButtonService, { ButtonStyle } from 'ember-ladda-button/services/ladda-button';
 
 export type ActionEvent = MouseEvent | TouchEvent;
-type Action = ((event: ActionEvent) => void) | ((event: ActionEvent) => Promise<void>);
+type Action = (() => void) | (() => Promise<void>);
+type ActionWithEvent = ((event: ActionEvent) => void) | ((event: ActionEvent) => Promise<void>);
 
-export interface LaddaButtonArgs {
+type ActionOrActionWithEvent = {
   action?: Action;
+  actionWithEvent?: never;
+} | {
+  action?: never;
+  actionWithEvent?: ActionWithEvent;
+};
+
+type LongActionOrLongActionWithEvent = {
+  longAction?: Action;
+  longActionWithEvent?: never;
+} | {
+  longAction?: never;
+  longActionWithEvent?: ActionWithEvent;
+};
+
+export type LaddaButtonArgs = ActionOrActionWithEvent & LongActionOrLongActionWithEvent & {
   buttonStyle?: ButtonStyle;
   class?: string;
   disabled?: boolean;
   inFlight?: boolean;
-  longAction?: Action;
   longDelay?: number;
   spinnerColor?: string;
   spinnerLines?: number;
@@ -98,7 +113,7 @@ export default class LaddaButton extends Component<LaddaButtonArgs> {
 
   @action
   handleClick(event: ActionEvent) {
-    const { action, longAction } = this.args;
+    const { action, actionWithEvent, longAction, longActionWithEvent } = this.args;
     if ((this.longPress ? !longAction : !action) || this.disabled) {
       this.clearLongState();
       this.cancelLongTimers();
@@ -110,7 +125,14 @@ export default class LaddaButton extends Component<LaddaButtonArgs> {
       this.cancelLongTimers();
     }
 
-    const maybePromise = this.longPress ? longAction?.(event) : action?.(event);
+    let maybePromise: void | Promise<void>;
+
+    if (this.longPress) {
+      maybePromise = longActionWithEvent ? longActionWithEvent(event) : longAction?.();
+    } else {
+      maybePromise = actionWithEvent ? actionWithEvent(event) : action?.();
+    }
+
     // duck typing instead of explicitly checking the instance
     // class because it can be a Promise or RSVP.Promise
     if (maybePromise && typeof maybePromise.finally === 'function') {
