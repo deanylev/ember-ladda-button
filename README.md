@@ -62,6 +62,8 @@ The arguments you can pass are:
 
 * `action` - The function to call when the button is clicked. If this returns a promise, the button will start spinning when it is clicked, and stop spinning when the promise resolves or rejects. (defaults to `undefined`)
 
+* `actionWithEvent` - Identical to `action` except the click event is passed through as the first arg. (defaults to `undefined`)
+
 * `buttonStyle` - How the spinner should appear while it is active - `'expand-left'` | `'expand-right'` | `'expand-up'` | `'expand-down'` | `'contract'` | `'contract-overlay'` | `'zoom-in'` | `'zoom-out'` | `'slide-left'` | `'slide-right'` | `'slide-up'` | `'slide-down'` - (defaults to `'expand-right'`)
 
 * `disabled` - The `disabled` attribute for the button element - (defaults to `false`)
@@ -69,6 +71,8 @@ The arguments you can pass are:
 * `inFlight` - Whether the button should currently be spinning (alternative to returning a promise in `action`) - (defaults to `false`)
 
 * `longAction` - Identical to `action` except will be called after the button is held for `longDelay`ms (see below) (defaults to `undefined`)
+
+* `longActionWithEvent` - Identical to `longAction` except the click event is passed through as the first arg. (defaults to `undefined`)
 
 * `longDelay` - How many milliseconds it should take before the button has been considered long pressed (see `longAction`). If no value is passed, long press functionality will be disabled. `longPress` and `longProgress` are yielded when passing a block for updating the appearance (defaults to `undefined`)
 
