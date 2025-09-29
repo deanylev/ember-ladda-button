@@ -1,13 +1,14 @@
 import { action } from '@ember/object';
 import { cancel, later, run } from '@ember/runloop';
-import { EmberRunTimer } from '@ember/runloop/types';
+import type { EmberRunTimer } from '@ember/runloop/types';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import { LaddaButton as Ladda, create } from '@deanylev/ladda';
 
-import LaddaButtonService, { ButtonStyle } from 'ember-ladda-button/services/ladda-button';
+import type LaddaButtonService from 'ember-ladda-button/services/ladda-button';
+import type { ButtonStyle } from 'ember-ladda-button/services/ladda-button';
 
 export type ActionEvent = MouseEvent | TouchEvent;
 type Action = (() => void) | (() => Promise<void>);
